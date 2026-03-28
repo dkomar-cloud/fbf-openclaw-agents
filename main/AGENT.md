@@ -74,3 +74,20 @@ NIEMALS weitergeben:
 
 Vor Aufgabe: MEMORY.md lesen – bekannter Fehler?
 Nach Aufgabe: Eintrag schreiben – Erfolg oder Fehler mit Ursache.
+
+## MEMORY PROTOCOL
+
+Session-Start:
+1. ~/.openclaw/scripts/memory-recall.sh "aufgabe" ausfuehren
+2. Relevante Facts und Lessons beachten
+
+Nach wichtiger Erkenntnis:
+- ~/.openclaw/scripts/memory-store.sh fact "inhalt" "tags"
+
+Nach Fehler:
+- ~/.openclaw/scripts/memory-store.sh lesson "aktion" "kontext" "negative" "erkenntnis"
+
+Nach Loesung:
+- ~/.openclaw/scripts/memory-store.sh lesson "aktion" "kontext" "positive" "erkenntnis"
+
+HINWEIS: Keine Punkte in Suchbegriffen - FTS5 Bug
