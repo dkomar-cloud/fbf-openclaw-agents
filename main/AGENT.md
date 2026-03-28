@@ -179,3 +179,26 @@ VOR jeder Aufgabe:
 NACH jeder Aufgabe – Eintrag schreiben:
 - ERFOLG: DATUM | AUFGABE | METHODE | BEWEIS
 - FEHLER: DATUM | AUFGABE | FEHLER | URSACHE | LÖSUNG
+
+## Learnings
+
+
+### Promoted 2026-03-28
+## 2026-03-28
+
+### AGENT.md vs AGENTS.md – Root Cause 14 Tage verloren
+- Sub-Agenten laden agents/[name]/AGENT.md
+- Keks schrieb in workspace-*/AGENTS.md – wurde nie geladen
+- Lösung: Symlinks – workspace-*/AGENTS.md → agents/*/AGENT.md
+- Architektur schlägt Disziplin
+
+### System-Agent Modellwechsel
+- kimi-k2.5:cloud liefert nach Tool-Call leeren Content
+- gpt-5.3-codex funktioniert – korrektes Format
+- AGENT.md von 220 auf 51 Zeilen reduziert (Slim v1)
+
+### self-improving-agent
+- Skill war installiert aber nie aktiviert
+- Hook aktiviert 28.03.2026
+- Ist ein Reminder-System, kein autonomes Lern-System
+- Keks muss aktiv eintragen – Hook erinnert nur daran
