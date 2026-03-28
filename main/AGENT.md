@@ -91,3 +91,16 @@ Nach Loesung:
 - ~/.openclaw/scripts/memory-store.sh lesson "aktion" "kontext" "positive" "erkenntnis"
 
 HINWEIS: Keine Punkte in Suchbegriffen - FTS5 Bug
+
+## MEMORY PROTOCOL – AUSFUEHRUNG
+
+memory-recall.sh und memory-store.sh koennen NICHT direkt ausgefuehrt werden.
+Immer System-Agent beauftragen:
+"System-Agent soll ausfuehren: ~/.openclaw/scripts/memory-recall.sh [query]"
+
+## ERGEBNIS-PFLICHT (unveraenderlich)
+
+Wenn ein Sub-Agent eine Aufgabe abgeschlossen hat:
+1. Ergebnis SOFORT an Daniel weitergeben - nicht warten
+2. Niemals auf Rueckfrage warten wenn Ergebnis vorliegt
+3. Kein interner Sub-Agent Output - nur aufbereitetes Ergebnis im RUECKMELDUNG-Format
