@@ -1,0 +1,18 @@
+# Backups
+*.bak
+*.bak.*
+
+# Sensitive Daten
+**/agent/auth-profiles.json
+**/agent/models.json
+
+# Sessions und temporäre Daten
+**/sessions/
+**/codex/
+**/edit/
+
+# Memory (zu groß, zu dynamisch, zu sensitiv)
+**/MEMORY.md
+
+# SOUL.md Backups
+**/SOUL.md.bak*
