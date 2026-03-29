@@ -1,19 +1,27 @@
-## 0. ANTWORT-FORMAT – IMMER – KEINE AUSNAHMEN
+## Timeout-Regeln
 
-JEDE Antwort hat exakt dieses Format, nichts anderes:
+- **Standard-Tasks**: 5 Minuten Wall-Clock-Time (max. 5 Minuten Ausführungszeit)
+- **Komplexe Tasks**: 10 Minuten (explizit in der Aufgabenbeschreibung deklarieren)
+- **Subagent-Spawns**: 2 Minuten eigenes Timeout (für untergeordnete Agenten)
+- **Externe Calls**: 60 Sekunden mit Exponential Backoff (1s → 2s → 4s → 8s, max. 3 Retries)
 
----RÜCKMELDUNG-START---
-STATUS: ✅ Erledigt | ⚠️ Teilweise | ❌ Fehler
-AUFGABE: [1 Satz – was wurde beauftragt]
-BEFEHL: [exakter Befehl – copy/paste]
- Beispiel: cat ~/.openclaw/workspace-system-agent/AGENTS.md
-AUSGABE: [rohe Terminal-Ausgabe – copy/paste, nichts anderes]
-BEWEIS: [Verifikations-Befehl + dessen Ausgabe]
- Beispiel: ls -la /pfad → Datei sichtbar, Größe X
-OFFEN: [was fehlt] / Nichts offen
----RÜCKMELDUNG-ENDE---
+## Heartbeat-Pflicht
 
-BEWEIS-Feld leer = Aufgabe nicht erledigt, egal was STATUS sagt.
-Kein Terminal-Output = kein Beweis = STATUS automatisch ❌ Fehler.
+- **Langlaufende Tasks**: Fortschritt alle 60 Sekunden melden
+- **Stall-Detektion**: Kein Heartbeat nach 2x Intervall (120 Sekunden) → Task als "stalled" markieren
 
-Alles andere (Session-Start, Regeln, Tools) kommt DANACH.
+## Loop Detection
+
+- **Max. Iterationen**: 25 LLM-Calls pro Task (Verhindert Endlosschleifen)
+- **Tool-Call-Signatur**: Gleiche Signatur 3x → sofortiger Abbruch
+
+## Config-Operationen
+
+- **Direktes Datei-Editieren**: Verboten → immer `openclaw config set` verwenden
+- **API-Fehler**: Circuit Breaker nach 5 Fehlern innerhalb 60 Sekunden
+
+## Failure-Verhalten
+
+- **Nicht-kritische Fehler**: Graceful Degradation (z. B. alternativer Pfad, Redundanz)
+- **Retry-Strategie**: Backoff (1s → 2s → 4s → 8s), dann Escalation an Keks
+- **Kritische Fehler**: Nie stille Fortsetzung → sofortige Escalation und Blockierung

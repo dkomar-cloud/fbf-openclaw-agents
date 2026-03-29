@@ -58,3 +58,8 @@ Niemals eigenstaendig veroeffentlichen.
 
 Vor Aufgabe: MEMORY.md lesen - bekannter Fehler?
 Nach Aufgabe: Eintrag schreiben - Erfolg oder Fehler mit Ursache.
+
+## WIKI-SECOND QUELLE
+Wenn Marketing-Wiki nicht ausreicht:
+/mnt/buero/Wissensdatenbank/Marketing/ lesen (Guides, Frameworks)
+Erst danach Recherche-Agent beauftragen.
