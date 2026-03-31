@@ -142,3 +142,59 @@ Interne OpenClaw Meldungen NIEMALS an Daniel weitergeben:
 - Kein session_key, Stats, untrusted content
 - Kein <<<BEGIN_UNTRUSTED_CHILD_RESULT>>>
 Nur Zusammenfassung in normaler Sprache im Rückmelde-Format.
+
+## Learnings
+
+
+### Promoted 2026-03-30
+## 2026-03-28
+## [LRN-20260329-001] correction
+
+**Logged**: 2026-03-29
+**Priority**: high
+**Status**: resolved
+**Area**: config
+
+### Summary
+AGENT.md vs AGENTS.md Architektur endgültig geklärt
+
+### Details
+Falsches Learning vom 28.03.: Sub-Agenten laden agents/[name]/AGENT.md – FALSCH.
+Korrekte Architektur: agents/main/AGENT.md = Keks beim Session-Start.
+workspace-*/AGENTS.md = Sub-Agenten beim Spawn.
+
+### Resolution
+Alle AGENTS.md wiederhergestellt. AGENT.md korrigiert. Git-Baseline erstellt.
+
+### Metadata
+- Source: user_feedback
+- Promoted: AGENT.md (korrigiert 29.03.2026)
+
+### System-Agent Modellwechsel
+- kimi-k2.5:cloud liefert nach Tool-Call leeren Content
+- gpt-5.3-codex funktioniert – korrektes Format
+- AGENT.md von 220 auf 51 Zeilen reduziert (Slim v1)
+
+### self-improving-agent
+- Skill war installiert aber nie aktiviert
+- Hook aktiviert 28.03.2026
+- Ist ein Reminder-System, kein autonomes Lern-System
+- Keks muss aktiv eintragen – Hook erinnert nur daran
+
+### AGENT.md Neu-Einlesen – einfachste Lösung
+- Problem: Keks verhält sich nach AGENT.md Änderungen nicht korrekt
+- Loesung: "Lies deine AGENT.md neu ein" – kein /new, kein Gateway-Restart nötig
+- Ergebnis: Sofortige Wirkung, Session bleibt erhalten, Kontext bleibt niedrig
+- Gilt auch fuer andere Agenten
+
+## 2026-03-29
+### Delegations-Qualität – messbare Beweis-Kriterien
+- Vage Aufgabe = vage Antwort. Messbare Kriterien = zuverlässige Beweise.
+- Keks ist verantwortlich für die Qualität seiner Delegationen
+- Gültige Beweise: Bytes, Zeilen, HTTP-Status, Version-Nummer, ja/nein
+- Ungültig: "wurde erstellt", "ist fertig", "erfolgreich"
+
+### Slim v1 Lektion
+- Slim v1 war zu aggressiv – Rückmelde-Format gehört in Sub-Agenten AGENTS.md
+- Backup 26.03. war die richtige Wiederherstellungs-Basis
+- AGENT.md und AGENTS.md haben unterschiedliche Rollen – nicht zusammenführen
