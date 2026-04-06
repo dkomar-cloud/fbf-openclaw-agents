@@ -214,3 +214,167 @@ NACH jeder Aufgabe – Eintrag schreiben:
     - Bessere Methode entdeckt → ~/.openclaw/workspace/.learnings/LEARNINGS.md (Kategorie: best_practice)
     - Wissen war veraltet/falsch → ~/.openclaw/workspace/.learnings/LEARNINGS.md (Kategorie: knowledge_gap)
     - Daniel wünscht fehlende Funktion → ~/.openclaw/workspace/.learnings/FEATURE_REQUESTS.md
+
+---
+
+## AUTONOMIE-REGEL (nach erteilter Freigabe)
+
+Nach "Freigabe" oder "bis fertig" oder wenn Daniel offline geht:
+Keks arbeitet selbstständig weiter bis 100% erledigt.
+
+- Rückschläge (403, Timeout, falscher Ansatz) → selbst nächste Lösung wählen, weiter
+- Zwischen-Entscheidungen → selbst entscheiden, Begründung im Endergebnis
+- Lange Jobs (>5 Min) → nohup starten, PID melden, nach 20 Min Log prüfen, nächste Kategorie ohne neue Freigabe starten
+- KEIN "Soll ich weitermachen?" nach erteilter Freigabe
+- KEIN Stopp nach Teilaufgabe — erst melden wenn 100% fertig
+
+## ANFORDERUNGS-PFLICHT
+
+Alle von Daniel genannten Felder/Kriterien MÜSSEN im Ergebnis vorhanden sein.
+Test-Query auf Beispiel-Datensatz vor jeder Fertigmeldung.
+Teilerfüllung = Aufgabe NICHT erledigt.
+
+## LANGE JOBS — Hintergrundprozess-Muster
+
+nohup python3 script.py > /home/daniel/logs/job.log 2>&1 &
+echo "PID: $!"
+→ PID sofort melden, nach 20 Min Log prüfen, weiter ohne Freigabe.
+Timeout des Sub-Agenten ≠ Job abgebrochen — immer mit ps aux prüfen.
+
+## LERNLOG — ID-FORMAT
+IDs immer mit aktuellem Jahr generieren:
+- Format: LRN-$(date +%Y%m%d)-XXX (Beispiel: LRN-20260405-001)
+- NIEMALS hardcoded "2025" — immer aktuelles Datum
+- Sofort loggen — nicht nachträglich sammeln
+
+## Learnings
+
+
+### Promoted 2026-04-05 aus workspace
+## [LRN-20250115-001] best_practice
+
+**Logged**: 2025-01-15T10:00:00Z
+**Priority**: high
+**Status**: promoted_to_skill
+**Skill-Path**: skills/docker-m1-fixes
+**Area**: infra
+
+### Summary
+Docker build fails on Apple Silicon due to platform mismatch
+...
+```
+
+---
+## [LRN-20250405-001] best_practice
+
+**Logged**: 2026-04-05T07:22:00Z
+**Priority**: high
+**Status**: pending
+**Area**: backend
+
+### Summary
+Bei langen Scraping-Tasks Timer/Reminder einsetzen für automatische Fortsetzung nach Timeout.
+
+### Details
+Roto-Scraping lief über mehrere Stunden mit mehreren Sub-Agenten. Nach 20 Min Timeout brach der erste Agent ab ohne Fortsetzung. Lösung: Timer-Mechanismus oder Reminder-System, das bei langen Tasks regelmäßig prüft und bei Abbruch automatisch neu startet.
+
+### Suggested Fix
+- Vor langem Task: Timer setzen mit Erinnerung nach 15 Min
+- Bei Timeout: Automatische Prüfung was erreicht wurde
+- Fortsetzung mit neuem Sub-Agent für verbleibende Arbeit
+
+### Metadata
+- Reproducible: yes
+- Related Files: -
+
+---
+## [LRN-20250405-002] best_practice
+
+**Logged**: 2026-04-05T07:22:00Z
+**Priority**: critical
+**Status**: pending
+**Area**: backend
+
+### Summary
+Scraping-Planung muss Datenquellen explizit definieren: Listing vs. Detailseiten.
+
+### Details
+Agent scrapte nur Listing-Seiten, nicht Detailseiten. Resultat: SKU und Beschreibung vorhanden, aber Sachnummer, Material-Nr, Farbe, DIN fehlten. Bei Planung muss klar sein: Welche Felder kommen von welcher Seite?
+
+### Suggested Fix
+- Vor Scraping: Mapping erstellen Feld → Quelle (Listing/Detail)
+- Test-Query nach erstem Artikel: Alle Felder verifizieren
+- Bei Lücken: Scraping-Logik anpassen
+
+### Metadata
+- Reproducible: yes
+- Related Files: -
+
+---
+## [LRN-20250405-003] best_practice
+
+**Logged**: 2026-04-05T07:22:00Z
+**Priority**: medium
+**Status**: pending
+**Area**: docs
+
+### Summary
+Wiki-Struktur explizit vorgeben und nach Anlegen verifizieren.
+
+### Details
+Agent legte alle Dateien in Serien/ ab statt nach Kategorien. Ursache: Struktur wurde nicht explizit genug kommuniziert. Lösung: Pfad-Vorlage mit Beispielen, Verifikation nach Anlegen.
+
+### Suggested Fix
+- Struktur als Baum-Diagramm oder Pfad-Liste vorgeben
+- Nach Anlegen: ls -R zur Verifikation
+- Bei Abweichung: Sofortige Korrektur
+
+### Metadata
+- Reproducible: yes
+- Related Files: -
+
+---
+## [LRN-20250405-004] best_practice
+
+**Logged**: 2026-04-05T07:22:00Z
+**Priority**: high
+**Status**: pending
+**Area**: backend
+
+### Summary
+Datenqualitäts-Prüfung nach jedem Zwischenschritt, nicht nur am Ende.
+
+### Details
+Keine Verifikation während des Scrapings führte zu spät erkannten Lücken. Test-Query nach jedem Schritt hätte Fehler früh erkannt.
+
+### Suggested Fix
+- Nach jedem Scraping-Schritt: Sample-Datensatz prüfen
+- Pflichtfelder definieren und auf Vollständigkeit testen
+- Bei Lücken: Sofortiger Stopp und Korrektur
+
+### Metadata
+- Reproducible: yes
+- Related Files: -
+
+---
+## [LRN-20250405-005] correction
+
+**Logged**: 2026-04-05T07:22:00Z
+**Priority**: medium
+**Status**: pending
+**Area**: config
+
+### Summary
+Self-Improvement muss während der Ausführung aktiv genutzt werden, nicht nachträglich.
+
+### Details
+Alle 5 Fehler traten auf, wurden aber erst nachträglich dokumentiert. Sofortige Dokumentation hätte Wiederholung verhindert.
+
+### Suggested Fix
+- Sub-Agenten melden Fehler sofort an Haupt-Agent
+- Haupt-Agent dokumentiert sofort in ERRORS.md
+- Kein "wir dokumentieren später" – immer sofort
+
+### Metadata
+- Reproducible: yes
+- Related Files: ~/.openclaw/workspace/.learnings/ERRORS.md
