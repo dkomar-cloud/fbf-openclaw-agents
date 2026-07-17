@@ -17,6 +17,7 @@
 | Hermes-Primärmodell | `qwen3next-80b` — 80B total / **~3B aktiv (A3B)**, ~43 GB im VRAM |
 | Host | GMKtec `nucbox-evo-x2` (Ryzen AI MAX+ 395), 128 GiB unified, **64 GiB fest als VRAM** |
 | Fallback | `qwen3-nothink` 14,8B lokal am ai-server |
+| Jarvis | eigenes `qwen3-30b-jarvis` (~17 GB, Persona via Modelfile/SOUL.md — **kein** Weight-Training) |
 | Problem | Modell „macht was es will" — Ursache: nur ~3B aktive Parameter → wackelige Steuerbarkeit |
 
 ## SOLL
@@ -25,6 +26,14 @@
 Q4 ~73–76 GB, verbessertes Tool-Calling, 256K Kontext, gleiche Qwen-Familie → Hermes-Prompts
 greifen fast unverändert; bonus: multimodal → potenziell für gutachten-agent nutzbar).
 `qwen3next-80b` bleibt als Fallback erhalten.
+
+**Konsolidierung (ein Modell für beide):** Da die Persona in der Config (SOUL.md/AGENT.md) liegt,
+nicht in den Gewichten, soll **Jarvis auf dasselbe Qwen3.5-122B** zeigen wie Hermes — das separate
+`qwen3-30b-jarvis` entfällt. Ergebnis: **ein** resident-Modell statt 80B + 30B parallel → einfacherer
+VRAM-Haushalt, kein Modell-Nachladen. Single-User (nur Daniel), nur zwei Workloads → Gleichzeitigkeit
+unkritisch. **Vorbehalt:** Jarvis ist Voice/interaktiv und braucht niedrige Latenz; 10B aktiv ist
+langsamer als die 3B des jetzigen Jarvis-30B → in Phase 2 messen. Falls zu träge: **ein kleines
+schnelles Modell nur für Jarvis** als Ausnahme behalten, alles andere auf dem großen Modell.
 
 ## RISIKO (übergreifend)
 
@@ -71,10 +80,16 @@ Ollama hostet mehrere Modelle gleichzeitig — das Neue **neben** dem 80B, Live-
       - Respektiert es Freigabe-Gates (keine stillen Folgeaktionen)?
       - Valide Tool-Call-/JSON-Ausgabe?
       - Firmenwissen (FBF / B&H / SV-Komar) korrekt?
-- [ ] Antwortgeschwindigkeit messen (10B aktiv ist langsamer als 3B — Tauglichkeit prüfen).
+- [ ] **Jarvis-Konsolidierung testen:** Jarvis-Persona (SOUL.md) auf demselben Modell —
+      Charme/Persönlichkeit noch stimmig?
+- [ ] **Latenz messen** — zwei getrennte Kriterien:
+      - Hermes-Agenten (Fließband): Durchsatz akzeptabel?
+      - **Jarvis (Voice): fühlt es sich snappy genug an?** (10B aktiv ist langsamer als 3B.)
 
 **ERFOLG-WENN (vorab fixieren):** neues Modell folgt in ≥ N/M Testfällen dem Format **und** schlägt
 den 80B bei „macht was es soll" spürbar, bei akzeptabler Geschwindigkeit. **Sonst: Abbruch, kein Umbau.**
+**Jarvis-Entscheid:** Persona ok **und** Voice-Latenz ok → Jarvis mit aufs große Modell. Latenz zu
+träge → kleines schnelles Modell nur für Jarvis behalten, Rest konsolidiert.
 
 **→ FREIGABE-GATE 1:** Nur bei bestandenem A/B weiter zu Phase 3.
 
