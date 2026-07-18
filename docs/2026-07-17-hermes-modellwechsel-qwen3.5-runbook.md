@@ -10,6 +10,24 @@
 
 ---
 
+## Einordnung / Reihenfolge — dieses Runbook ist Schritt B
+
+Zuerst **Schritt A (GLM-Einrichter, läuft an):** GLM 5.2 (`glm-5.2:cloud`) richtet Hermes
+von innen sauber ein (Arbeitsplan `outputs/2026-07-18-arbeitsplan-hermes-glm-einrichter.md`
+im Flotten-Projektbaum am Server; Zwei-Phasen, Phase 0 Pilot; `ollama pull glm-5.2:cloud`
+braucht Freigabe; Cloud-Limits/Kosten vorher prüfen). **Harte Datengrenze: `:cloud` sieht
+NIE Kundendaten.** „80B-Abnahme-Falle" beachten — kein Modell nimmt seine eigene Arbeit ab.
+
+**Dann Schritt B (dieses Runbook):** auf der sauberen Basis den lokalen **Arbeiter**
+(heute `qwen3next-80b`) gegen **Qwen3.5-122B-A10B** tauschen — damit es „sauberer läuft und
+zusammenarbeitet". Die Rollen ergänzen sich: GLM = cloud/Einrichter (ohne Kundendaten),
+Qwen = lokal/Arbeiter (DSGVO-sicher, verarbeitet die echten Daten).
+
+**Vorgezogen erlaubt:** Phase 0 + 1 dieses Runbooks (rein read-only Fakten sammeln) können
+jederzeit laufen. Der eigentliche Tausch (Phase 3/4) kommt **nach** Schritt A.
+
+---
+
 ## IST (Quelle: `~/flotte/INFRASTRUKTUR.md`, 15.07.2026)
 
 | | Wert |
